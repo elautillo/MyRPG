@@ -28,7 +28,7 @@ public class Cs_Door : MonoBehaviour, Is_Interactable
 			while (transform.rotation.eulerAngles != f_NewRot)
 			{
 				//rotate door
-				Vector3.MoveTowards(
+				transform.rotation.eulerAngles = Vector3.MoveTowards(
 					transform.rotation.eulerAngles,
 					f_NewRot,
 					Time.deltaTime * f_RotateSpeed);
