@@ -4,14 +4,28 @@ using UnityEngine;
 
 public class Cs_Player : MonoBehaviour
 {
-	RaycastHit f_Hit;
+	RaycastHit f_hit;
+
+    void Update()
+    {
+        M_CheckInput();
+    }
+
+    void M_CheckInput()
+    {
+       if (Input.GetKeyDown(Ps_Input.Cf_INTERACTION_KEY))
+       {
+           M_Interact();
+       }
+    }
 
     void M_Interact()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out f_Hit, 3)
-            && Input.GetKeyDown(Ps_Input.C_INTERACTION_KEY))
+        Debug.DrawRay(transform.position, transform.forward * 10, Color.red, 10);
+        if (Physics.Raycast(transform.position, transform.forward, out f_hit, Mathf.Infinity))
         {
-            f_Hit.transform.GetComponent<Is_Interactable>().M_Action();
+            print(f_hit.transform.gameObject.name);
+            f_hit.transform.GetComponent<Is_Interactable<Transform>>().M_Action(transform);
         }
     }
 }

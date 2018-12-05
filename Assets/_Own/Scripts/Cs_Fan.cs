@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Cs_Fan : MonoBehaviour
 {
-	[SerializeField] int f_Speed;
+	[SerializeField] int f_rotationSpeed;
+	
 	
 	void Update()
 	{
-		transform.Rotate(0, 0, Time.deltaTime * f_Speed);
+		transform.Rotate(0, 0, Time.deltaTime * f_rotationSpeed);
 	}
 }

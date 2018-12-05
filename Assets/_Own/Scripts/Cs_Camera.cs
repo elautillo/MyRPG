@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class Cs_Camera : MonoBehaviour
 {
-	Camera f_Cam;
+	Camera f_cam;
+
 
 	void Awake()
 	{
-		f_Cam = GetComponent<Camera>();
+		f_cam = GetComponent<Camera>();
 	}
+
 
 	void Update()
 	{
-		f_Cam.ScreenPointToRay(Input.mousePosition);
+		f_cam.ScreenPointToRay(Input.mousePosition);
 	}
 }
