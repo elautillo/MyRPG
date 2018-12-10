@@ -1,20 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class Cs_Camera : MonoBehaviour
 {
-	Camera f_cam;
-
-
-	void Awake()
-	{
-		f_cam = GetComponent<Camera>();
-	}
-
-
+	[SerializeField] CinemachineFreeLook f_cmFreeLook;
+	
 	void Update()
 	{
-		f_cam.ScreenPointToRay(Input.mousePosition);
+		if (Input.GetKey(Ps_Input.Cf_CAMERA_SHIFT_KEY))
+		{
+			f_cmFreeLook.m_XAxis.m_MaxSpeed = 300;
+			f_cmFreeLook.m_YAxis.m_MaxSpeed = 2;
+		}
+		else
+		{
+			f_cmFreeLook.m_XAxis.m_MaxSpeed = 0;
+			f_cmFreeLook.m_YAxis.m_MaxSpeed = 0;
+		}
 	}
 }

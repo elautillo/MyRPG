@@ -13,7 +13,7 @@ public class Cs_Player : MonoBehaviour
 
     void M_CheckInput()
     {
-       if (Input.GetKeyDown(Ps_Input.Cf_INTERACTION_KEY))
+       if (Input.GetKeyDown(Ps_Input.Cf_PLAYER_INTERACTION_KEY))
        {
            M_Interact();
        }
@@ -21,11 +21,20 @@ public class Cs_Player : MonoBehaviour
 
     void M_Interact()
     {
-        Debug.DrawRay(transform.position, transform.forward * 10, Color.red, 10);
-        if (Physics.Raycast(transform.position, transform.forward, out f_hit, Mathf.Infinity))
+        //Debug.DrawRay(transform.position, transform.forward * 100, Color.red, 10);
+
+        if (Physics.Raycast(
+            transform.position,
+            transform.forward,
+            out f_hit,
+            Mathf.Infinity))
         {
             print(f_hit.transform.gameObject.name);
-            f_hit.transform.GetComponent<Is_Interactable<Transform>>().M_Action(transform);
+            
+            if (f_hit.transform.GetComponent<Is_Interactable<Transform>>() != null)
+            {
+                f_hit.transform.GetComponent<Is_Interactable<Transform>>().M_Action(transform);
+            }
         }
     }
 }
