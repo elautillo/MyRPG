@@ -17,8 +17,10 @@ public class Cs_Door : MonoBehaviour, Is_Interactable<Transform>
 
 	public void M_Action(Transform v_transform)
 	{
-		f_rigidbody.AddForce(
-			transform.position - v_transform.position,
-			ForceMode.Acceleration);
+		//f_rigidbody.AddForce(
+		//	transform.position - v_transform.position,
+		//	ForceMode.Acceleration);
+
+		transform.Rotate(0, 90, 0);
 	}
 }
