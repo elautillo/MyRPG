@@ -28,22 +28,19 @@ public class Cs_Player : MonoBehaviour
 
         if (Physics.Raycast(transform.position, transform.forward, out f_hit, 3))
         {
-            if (f_hit.collider != null)
+            print(f_hit.transform.gameObject.name);
+            
+            Is_Interactable<Transform> v_interactableTarget =
+                f_hit.transform.GetComponent<Is_Interactable<Transform>>();
+
+            if (v_interactableTarget != null)
             {
-                Transform v_target = f_hit.transform;
+                print(Ps_Debug.Cf_INTERACTING_MESSAGE);
 
-                print(v_target.gameObject.name);
-                
-                if (v_target.GetComponent<Is_Interactable<Transform>>() != null)
-                {
-                    print(Ps_Debug.Cf_INTERACTING_MESSAGE);
-
-                    v_target.GetComponent<Is_Interactable<Transform>>().
-                        M_Action(transform);
-                }
-                else print(Ps_Debug.Cf_NON_INTERACTABLE_MESSAGE);
+                v_interactableTarget.M_Action(transform);
             }
-            else print(Ps_Debug.Cf_NO_DETECTION_MESSAGE);
+            else print(Ps_Debug.Cf_NON_INTERACTABLE_MESSAGE);
         }
+        else print(Ps_Debug.Cf_NO_DETECTION_MESSAGE);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Cs_Fan : MonoBehaviour
 {
-	[SerializeField] int f_rotationSpeed;
+	[SerializeField] int f_rotationSpeed = 10;
 	
 	
 	void Update()
