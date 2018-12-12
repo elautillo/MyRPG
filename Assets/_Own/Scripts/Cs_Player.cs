@@ -6,7 +6,7 @@ public class Cs_Player : MonoBehaviour
 {
 	RaycastHit f_hit;
 
-
+// lo de la llaveeeeeeeeeeeeeeeeeeeeee
     void Update()
     {
         M_CheckInput();
@@ -30,14 +30,14 @@ public class Cs_Player : MonoBehaviour
         {
             print(f_hit.transform.gameObject.name);
             
-            Is_Interactable<Transform> v_interactableTarget =
-                f_hit.transform.GetComponent<Is_Interactable<Transform>>();
+            Is_Interactable v_interactableTarget =
+                f_hit.transform.GetComponent<Is_Interactable>();
 
             if (v_interactableTarget != null)
             {
                 print(Ps_Debug.Cf_INTERACTING_MESSAGE);
 
-                v_interactableTarget.M_Action(transform);
+                v_interactableTarget.M_Action();
             }
             else print(Ps_Debug.Cf_NON_INTERACTABLE_MESSAGE);
         }
