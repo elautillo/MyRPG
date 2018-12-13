@@ -5,19 +5,19 @@ using UnityEngine.SceneManagement;
 
 public sealed class Cs_DataStore : MonoBehaviour
 {
-	const string Cf_SCENE_ID_NAME = "sceneId";
-    const string Cf_XPOS_NAME = "xPos";
-    const string Cf_YPOS_NAME = "yPos";
-    const string Cf_ZPOS_NAME = "zPos";
-    const string Cf_INVENTORY_NAME = "savedInventory";
-    const string Cf_ITEM_NAME = "Item ";
-    const string Cf_SCORE_NAME = "savedScore";
+	const string Cf_SCENE_ID_KEY = "sceneId";
+    const string Cf_XPOS_KEY = "xPos";
+    const string Cf_YPOS_KEY = "yPos";
+    const string Cf_ZPOS_KEY = "zPos";
+    const string Cf_INVENTORY_KEY = "savedInventory";
+    const string Cf_ITEM_KEY = "Item";
+    const string Cf_SCORE_KEY = "savedScore";
 
 
 	public static void StoreAll(
         Vector3 p_position,
         int p_score,
-        string[] p_itemName,
+        Cs_Item[] p_items,
         int p_inventoryLength)
 	{
         StoreScene();
@@ -26,59 +26,15 @@ public sealed class Cs_DataStore : MonoBehaviour
 
         for (int i = 0; i < p_inventoryLength; i++)
         {
-            StoreItem(p_itemName[i], i);
+            StoreItem(i, p_items[i].GetType().ToString());
         }
     }
-
-
-    // public static void StoreData(string p_name, string p_data) // <Object> where Object : float, string, int
-    // {
-    //     if (p_data.GetType() == typeof(string))
-    //     {
-    //         PlayerPrefs.SetString(p_name, p_data.ToString());
-    //     }
-    //     else if (p_data.GetType() == typeof(float))
-    //     {
-    //         PlayerPrefs.SetString(p_name, p_data);
-    //     }
-    //     else if (p_data.GetType() == typeof(int))
-    //     {
-    //         PlayerPrefs.SetString(p_name, p_data.ToString());
-    //     }
-    //     else print("You tried yo store invalid data");
-    // }
 
 
     public static void StoreScene()
 	{
         PlayerPrefs.SetInt(
-            Cf_SCENE_ID_NAME, SceneManager.GetActiveScene().buildIndex);
-
-        PlayerPrefs.Save();
-    }
-
-
-    public static void StorePosition(Vector3 p_position)
-	{
-        PlayerPrefs.SetFloat(Cf_XPOS_NAME, p_position.x);
-        PlayerPrefs.SetFloat(Cf_YPOS_NAME, p_position.y);
-        PlayerPrefs.SetFloat(Cf_ZPOS_NAME, p_position.z);
-
-        PlayerPrefs.Save();
-    }
-
-
-    public static void StoreItem(string p_itemName, int p_index)
-	{
-        PlayerPrefs.SetString(Cf_ITEM_NAME + p_index.ToString(), p_itemName);
-        
-        PlayerPrefs.Save();
-    }
-
-
-    public static void StoreScore(int p_score)
-	{
-        PlayerPrefs.SetInt(Cf_SCORE_NAME, p_score);
+            Cf_SCENE_ID_KEY, SceneManager.GetActiveScene().buildIndex);
 
         PlayerPrefs.Save();
     }
@@ -88,9 +44,9 @@ public sealed class Cs_DataStore : MonoBehaviour
     {
         int v_savedScene = -1;
 
-        if (PlayerPrefs.HasKey(Cf_SCENE_ID_NAME))
+        if (PlayerPrefs.HasKey(Cf_SCENE_ID_KEY))
         {
-            v_savedScene = PlayerPrefs.GetInt(Cf_SCENE_ID_NAME);
+            v_savedScene = PlayerPrefs.GetInt(Cf_SCENE_ID_KEY);
         }
         return v_savedScene;
     }
@@ -108,12 +64,22 @@ public sealed class Cs_DataStore : MonoBehaviour
     }
 
 
+    public static void StorePosition(Vector3 p_position)
+	{
+        PlayerPrefs.SetFloat(Cf_XPOS_KEY, p_position.x);
+        PlayerPrefs.SetFloat(Cf_YPOS_KEY, p_position.y);
+        PlayerPrefs.SetFloat(Cf_ZPOS_KEY, p_position.z);
+
+        PlayerPrefs.Save();
+    }
+
+
     public static Vector3 GetSavedPosition()
 	{
         Vector3 v_position = new Vector3(
-            GetSavedAxis(Cf_XPOS_NAME),
-            GetSavedAxis(Cf_YPOS_NAME),
-            GetSavedAxis(Cf_ZPOS_NAME));
+            GetSavedAxis(Cf_XPOS_KEY),
+            GetSavedAxis(Cf_YPOS_KEY),
+            GetSavedAxis(Cf_ZPOS_KEY));
         
         return v_position;
     }
@@ -131,15 +97,11 @@ public sealed class Cs_DataStore : MonoBehaviour
     }
 
 
-    public static string GetSavedItem(int p_index)
-    {
-        string v_item = "";
+    public static void StoreScore(int p_score)
+	{
+        PlayerPrefs.SetInt(Cf_SCORE_KEY, p_score);
 
-        if (PlayerPrefs.HasKey(Cf_ITEM_NAME + p_index.ToString()))
-        {
-            v_item = PlayerPrefs.GetString(Cf_ITEM_NAME + p_index.ToString());
-        }
-        return v_item;
+        PlayerPrefs.Save();
     }
 
 
@@ -147,11 +109,31 @@ public sealed class Cs_DataStore : MonoBehaviour
     {
         int v_savedScore = 0;
 
-        if (PlayerPrefs.HasKey(Cf_SCORE_NAME))
+        if (PlayerPrefs.HasKey(Cf_SCORE_KEY))
         {
-            v_savedScore = PlayerPrefs.GetInt(Cf_SCORE_NAME);
+            v_savedScore = PlayerPrefs.GetInt(Cf_SCORE_KEY);
         }
         return v_savedScore;
+    }
+
+
+    public static void StoreItem(int p_index, string p_itemType)
+	{
+        PlayerPrefs.SetString(Cf_ITEM_KEY + p_index.ToString(), p_itemType);
+        
+        PlayerPrefs.Save();
+    }
+
+
+    public static string GetSavedItem(int p_index)
+    {
+        string v_item = "";
+
+        if (PlayerPrefs.HasKey(Cf_ITEM_KEY + p_index.ToString()))
+        {
+            v_item = PlayerPrefs.GetString(Cf_ITEM_KEY + p_index.ToString());
+        }
+        return v_item;
     }
 
 

@@ -17,6 +17,7 @@ public class Cs_Item : MonoBehaviour, Is_Interactable<Cs_Player>
 
 	public void M_Action(Cs_Player p_player)
 	{
-		p_player.M_GetInventory().M_StoreItem(this);
+		p_player.M_GetInventory().M_StoreItem(this.GetType().ToString());
+		this.gameObject.SetActive(false);
 	}
 }

@@ -4,19 +4,15 @@ using UnityEngine;
 
 public class Cs_Inventory : MonoBehaviour
 {
-	const int Cf_INVENTORY_SIZE = 9;
-	[SerializeField] int f_activeItem = 0;
+	const int Cf_INVENTORY_SIZE = 4;
+    [SerializeField] int f_activeItem = 0;
 	[SerializeField] Cs_Item[] f_items = new Cs_Item[Cf_INVENTORY_SIZE];
 
 
 	void Start()
 	{
+        M_Fill();
 		M_ActivateItem();
-
-        for (int i = 0; i < Cf_INVENTORY_SIZE; i++)
-        {
-            f_items[i] = Instantiate(Resources.LoadAssetAtPath("Examplepath/" + Cs_DataStore.GetSavedItem(i));
-        }
 	}
 
 
@@ -48,37 +44,40 @@ public class Cs_Inventory : MonoBehaviour
     }
 
 
-    public string[] M_GetItemNames()
-    {
-        string[] v_itemNames = null; // controlar nulls
-
-        for (int i = 0; i < Cf_INVENTORY_SIZE; i++)
-        {
-            v_itemNames[i] = f_items[i].gameObject.name;
-        }
-        return v_itemNames;
-    }
-
-
     public Cs_Item[] M_GetItems()
     {
         return f_items;
     }
 
 
-    public int M_GetInventorySize()
+    public int M_GetSize()
     {
         return Cf_INVENTORY_SIZE;
     }
 
 
-    public void M_StoreItem(Cs_Item p_item)
+    void M_Fill()
+    {
+        for (int i = 0; i < Cf_INVENTORY_SIZE; i++)
+        {
+            string v_itemType = Cs_DataStore.GetSavedItem(i);
+
+            if (v_itemType != "")
+            {
+                M_StoreItem(v_itemType);
+            }
+            else f_items[i] = new Cs_Item();
+        }
+    }
+
+
+    public void M_StoreItem(string p_itemType)
     {
         for (int i = 0; i < Cf_INVENTORY_SIZE; i++)
 		{
-			if (f_items[i] == null)
+			if (f_items[i].GetComponents<Component>().Length < 3)
 			{
-				f_items[i] = p_item;
+				f_items[i] = GetComponent(p_itemType) as Cs_Item;
                 return;
 			}
 		}

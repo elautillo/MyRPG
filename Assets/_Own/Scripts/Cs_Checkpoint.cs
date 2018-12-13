@@ -20,7 +20,7 @@ public class Cs_Checkpoint : MonoBehaviour, Is_Interactable<Cs_Player>
 		Cs_DataStore.StoreAll(
 			p_player.transform.position,
 			p_player.M_GetScore(),
-			p_player.M_GetInventory().M_GetItemNames(),
-			p_player.M_GetInventory().M_GetInventorySize());
+			p_player.M_GetInventory().M_GetItems(),
+			p_player.M_GetInventory().M_GetSize());
 	}
 }
