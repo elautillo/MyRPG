@@ -4,9 +4,24 @@ using UnityEngine;
 
 public class Cs_Player : MonoBehaviour
 {
-	RaycastHit f_hit;
+    [SerializeField] int f_score;
 
-// lo de la llaveeeeeeeeeeeeeeeeeeeeee
+    Cs_Inventory f_inventory;
+    RaycastHit f_hit;
+
+
+    void Awake()
+    {
+        f_inventory = GetComponent<Cs_Inventory>();
+    }
+
+
+    void Start()
+    {
+        
+    }
+
+
     void Update()
     {
         M_CheckInput();
@@ -15,9 +30,21 @@ public class Cs_Player : MonoBehaviour
 
     void M_CheckInput()
     {
-       if (Input.GetKeyDown(Ps_Input.Cf_PLAYER_INTERACTION_KEY))
+       if (Input.GetKeyDown(Ps_Input.GetInteractionKey()))
        {
            M_Interact();
+       }
+       else if (Input.GetKeyDown(Ps_Input.GetNextItemKey()))
+       {
+           f_inventory.M_ChangeItem(true);
+       }
+       else if (Input.GetKeyDown(Ps_Input.GetPreviousItemKey()))
+       {
+           f_inventory.M_ChangeItem(false);
+       }
+       else if (Input.GetKeyDown(Ps_Input.GetDropItemKey()))
+       {
+           f_inventory.M_DropItem(transform.position + new Vector3(0, 0, 3));
        }
     }
     
@@ -30,17 +57,29 @@ public class Cs_Player : MonoBehaviour
         {
             print(f_hit.transform.gameObject.name);
             
-            Is_Interactable v_interactableTarget =
-                f_hit.transform.GetComponent<Is_Interactable>();
+            Is_Interactable<Cs_Player> v_interactableTarget =
+                f_hit.transform.GetComponent<Is_Interactable<Cs_Player>>();
 
             if (v_interactableTarget != null)
             {
-                print(Ps_Debug.Cf_INTERACTING_MESSAGE);
+                print(Ps_Debug.GetInteractingMessage());
 
-                v_interactableTarget.M_Action();
+                v_interactableTarget.M_Action(this);
             }
-            else print(Ps_Debug.Cf_NON_INTERACTABLE_MESSAGE);
+            else print(Ps_Debug.GetNonInteractableMessage());
         }
-        else print(Ps_Debug.Cf_NO_DETECTION_MESSAGE);
+        else print(Ps_Debug.GetNoDetectionMessage());
+    }
+
+
+    public int M_GetScore()
+    {
+        return f_score;
+    }
+
+
+    public Cs_Inventory M_GetInventory()
+    {
+        return f_inventory;
     }
 }

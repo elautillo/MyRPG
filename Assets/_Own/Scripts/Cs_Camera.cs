@@ -9,7 +9,7 @@ public class Cs_Camera : MonoBehaviour
 	
 	void Update()
 	{
-		if (Input.GetKey(Ps_Input.Cf_CAMERA_SHIFT_KEY))
+		if (Input.GetKey(Ps_Input.GetCameraShiftKey()))
 		{
 			f_cmFreeLook.m_XAxis.m_MaxSpeed = 300;
 			f_cmFreeLook.m_YAxis.m_MaxSpeed = 2;
