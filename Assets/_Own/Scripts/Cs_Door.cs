@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Cs_Door : MonoBehaviour, Is_Interactable<Cs_Player>
 {
+	[SerializeField] Cs_Item f_key;
 	Rigidbody f_rigidbody;
-	
+
 
 	void Awake()
 	{
@@ -20,17 +21,9 @@ public class Cs_Door : MonoBehaviour, Is_Interactable<Cs_Player>
 		// 	transform.position - v_transform.position,
 		// 	ForceMode.Acceleration);
 
-		if (p_player.M_GetInventory().M_GetActiveItemName() ==
-			Ps_ObjectNames.GetKeyItemName())
+		if (p_player.M_GetInventory().M_GetActiveItem() == f_key)
 		{
 			f_rigidbody.constraints = RigidbodyConstraints.None;
 		}
 	}
-
-
-	// void OnMouseDown()
-    // {
-	// 	print("CKICK");
-    //     f_rigidbody.AddRelativeForce(0, 0, -50);
-    // }
 }

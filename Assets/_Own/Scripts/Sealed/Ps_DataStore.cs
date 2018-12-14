@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public sealed class Cs_DataStore : MonoBehaviour
+public sealed class Ps_DataStore : MonoBehaviour
 {
 	const string Cf_SCENE_ID_KEY = "sceneId";
     const string Cf_XPOS_KEY = "xPos";

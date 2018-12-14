@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public sealed class Cs_GameController : MonoBehaviour
+public sealed class Ps_GameController : MonoBehaviour
 {
 	private static bool Sf_playing;
 

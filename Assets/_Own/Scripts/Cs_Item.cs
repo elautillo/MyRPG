@@ -2,22 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cs_Item : MonoBehaviour, Is_Interactable<Cs_Player>
+public class Cs_Item : MonoBehaviour
 {
+	[SerializeField] Cs_Drop f_drop;
 
-	// Use this for initialization
-	void Start () {
+
+	void Start()
+	{
 		
 	}
 	
-	// Update is called once per frame
-	void Update () {
+
+	void Update()
+	{
 		
 	}
 
-	public void M_Action(Cs_Player p_player)
+	
+	public void M_Drop(Vector3 p_position)
 	{
-		p_player.M_GetInventory().M_StoreItem(this.GetType().ToString());
-		this.gameObject.SetActive(false);
+		f_drop.GetComponent<Renderer>().enabled = true;
+		f_drop.transform.position = p_position;
 	}
 }

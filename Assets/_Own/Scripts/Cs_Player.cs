@@ -12,7 +12,7 @@ public class Cs_Player : MonoBehaviour
 
     void Awake()
     {
-        f_inventory = GetComponent<Cs_Inventory>();
+        f_inventory = GetComponentInChildren<Cs_Inventory>();
     }
 
 
@@ -44,7 +44,7 @@ public class Cs_Player : MonoBehaviour
        }
        else if (Input.GetKeyDown(Ps_Input.GetDropItemKey()))
        {
-           f_inventory.M_DropItem(transform.position + new Vector3(0, 0, 3));
+           f_inventory.M_DropItem(transform.position + new Vector3(0, 1, 0));
        }
     }
     
