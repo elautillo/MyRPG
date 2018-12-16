@@ -1,13 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Cs_Inventory : MonoBehaviour
 {
 	const int Cf_INVENTORY_SIZE = 4;
     [SerializeField] Cs_Item f_emptyItem;
+    [SerializeField] Cs_Key f_key;
+    [SerializeField] Cs_LifePot f_lifePot;
+    [SerializeField] Cs_ManaPot f_manaPot;
+    [SerializeField] Cs_Shield f_shield;
+    [SerializeField] Cs_Staff f_staff;
+    [SerializeField] Cs_Sword f_sword;
     [SerializeField] int f_activeItem = 0;
-	[SerializeField] Cs_Item[] f_items = new Cs_Item[Cf_INVENTORY_SIZE];
+	[SerializeField] string[] f_itemTypes = new string[Cf_INVENTORY_SIZE];
 
 
 	void Start()
@@ -26,16 +33,51 @@ public class Cs_Inventory : MonoBehaviour
     void M_Fill()
     {
         string v_itemType;
+        string v_keyType = f_key.GetType().ToString();
+        string v_lifePotType = f_lifePot.GetType().ToString();
+        string v_manaPotType = f_manaPot.GetType().ToString();
+        string v_shieldType = f_shield.GetType().ToString();
+        string v_staffType = f_staff.GetType().ToString();
+        string v_swordType = f_sword.GetType().ToString();
 
         for (int i = 0; i < Cf_INVENTORY_SIZE; i++)
         {
             v_itemType = Ps_DataStore.GetSavedItem(i);
 
-            if (v_itemType != "")
+            if (v_itemType == "")
             {
-                M_StoreItem(v_itemType);
+                f_itemTypes[i] = "";
+            }    
+            else if (v_itemType == v_keyType)
+            {
+                f_key.transform.parent = transform;
+                f_itemTypes[i] = v_keyType;
             }
-            else f_items[i] = Instantiate(f_emptyItem);
+            else if (v_itemType == v_lifePotType)
+            {
+                f_lifePot.transform.parent = transform;
+                f_itemTypes[i] = v_lifePotType;
+            }
+            else if (v_itemType == v_manaPotType)
+            {
+                f_manaPot.transform.parent = transform;
+                f_itemTypes[i] = v_manaPotType;
+            }
+            else if (v_itemType == v_shieldType)
+            {
+                f_shield.transform.parent = transform;
+                f_itemTypes[i] = v_shieldType;
+            }
+            else if (v_itemType == v_staffType)
+            {
+                f_staff.transform.parent = transform;
+                f_itemTypes[i] = v_staffType;
+            }
+            else if (v_itemType == v_swordType)
+            {
+                f_sword.transform.parent = transform;
+                f_itemTypes[i] = v_swordType;
+            }
         }
     }
 
@@ -75,7 +117,7 @@ public class Cs_Inventory : MonoBehaviour
     {
         for (int i = 0; i < Cf_INVENTORY_SIZE; i++)
 		{
-			if (f_items[i].GetComponents<Component>().Length < 3)
+			if (f_itemTypes[i] != "")
 			{
 				f_items[i] = GetComponent(p_itemType) as Cs_Item;
                 f_activeItem = i;

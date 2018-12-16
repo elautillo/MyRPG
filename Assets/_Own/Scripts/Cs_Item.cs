@@ -4,18 +4,28 @@ using UnityEngine;
 
 public class Cs_Item : MonoBehaviour
 {
-	[SerializeField] Cs_Drop f_drop;
+	int f_rotation = 0;
+	[SerializeField] int f_speed = 1;
+	Rigidbody f_rigidbody;
 
 
 	void Start()
 	{
-		
+		f_rigidbody = GetComponent<Rigidbody>();
+		f_rigidbody.constraints = RigidbodyConstraints.FreezePosition;
 	}
 	
 
 	void Update()
 	{
-		
+		M_Rotate();
+	}
+
+
+	public void M_Action(Cs_Player p_player)
+	{
+		transform.parent = p_player.transform;
+        f_itemTypes[i] = v_swordType;
 	}
 
 	
