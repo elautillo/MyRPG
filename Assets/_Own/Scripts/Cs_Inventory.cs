@@ -5,126 +5,119 @@ using System;
 
 public class Cs_Inventory : MonoBehaviour
 {
-	const int Cf_INVENTORY_SIZE = 4;
-    [SerializeField] Cs_Item f_emptyItem;
-    [SerializeField] Cs_Key f_key;
-    [SerializeField] Cs_LifePot f_lifePot;
-    [SerializeField] Cs_ManaPot f_manaPot;
-    [SerializeField] Cs_Shield f_shield;
-    [SerializeField] Cs_Staff f_staff;
-    [SerializeField] Cs_Sword f_sword;
+    const int Cf_INVENTORY_SIZE = 4;
     [SerializeField] int f_activeItem = 0;
-	[SerializeField] string[] f_itemTypes = new string[Cf_INVENTORY_SIZE];
+	[SerializeField] List<Cs_Item> f_items = new List<Cs_Item>();
+    [SerializeField] GameObject f_worldItems;
 
 
 	void Start()
 	{
+        Ps_DataStore.ClearData();
         M_Fill();
-		M_ActivateItem();
-	}
-
-
-	void Update()
-	{
-		
 	}
 
 
     void M_Fill()
     {
-        string v_itemType;
-        string v_keyType = f_key.GetType().ToString();
-        string v_lifePotType = f_lifePot.GetType().ToString();
-        string v_manaPotType = f_manaPot.GetType().ToString();
-        string v_shieldType = f_shield.GetType().ToString();
-        string v_staffType = f_staff.GetType().ToString();
-        string v_swordType = f_sword.GetType().ToString();
+        string v_itemName;
+        GameObject v_item;
 
         for (int i = 0; i < Cf_INVENTORY_SIZE; i++)
         {
-            v_itemType = Ps_DataStore.GetSavedItem(i);
+            v_itemName = Ps_DataStore.GetSavedItem(i);
+ 
+            if (v_itemName != "")
+            {
+                v_item = GameObject.Find(v_itemName);
 
-            if (v_itemType == "")
-            {
-                f_itemTypes[i] = "";
-            }    
-            else if (v_itemType == v_keyType)
-            {
-                f_key.transform.parent = transform;
-                f_itemTypes[i] = v_keyType;
+                v_item.transform.parent = transform;
+                v_item.transform.position = transform.position;
+
+                f_items[i] = GetComponents<Cs_Item>()[i];
             }
-            else if (v_itemType == v_lifePotType)
-            {
-                f_lifePot.transform.parent = transform;
-                f_itemTypes[i] = v_lifePotType;
-            }
-            else if (v_itemType == v_manaPotType)
-            {
-                f_manaPot.transform.parent = transform;
-                f_itemTypes[i] = v_manaPotType;
-            }
-            else if (v_itemType == v_shieldType)
-            {
-                f_shield.transform.parent = transform;
-                f_itemTypes[i] = v_shieldType;
-            }
-            else if (v_itemType == v_staffType)
-            {
-                f_staff.transform.parent = transform;
-                f_itemTypes[i] = v_staffType;
-            }
-            else if (v_itemType == v_swordType)
-            {
-                f_sword.transform.parent = transform;
-                f_itemTypes[i] = v_swordType;
-            }
+        }
+        print(f_items.Count);
+        M_DisableRenderers(1);
+        M_DisableRenderers(2);
+        if (f_items.Count > 0) M_ActivateItem();
+    }
+
+
+    void M_DisableRenderers(int p_param) //Cs_Item[] p_items, Component p_component
+    {
+        switch (p_param)
+        {
+            case 1:
+                foreach (var l_item in GetComponents<Cs_Item>())
+                {
+                    l_item.
+                        GetComponent<MeshRenderer>().enabled = false;
+                }
+            break;
+            
+            case 2:
+                foreach (var l_item in f_worldItems.GetComponents<Cs_Item>())
+                {
+                    l_item.
+                        GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+                }
+            break;
+
+            case 3:
+                foreach (var l_item in GetComponents<Cs_Item>())
+                {
+                    l_item.
+                        GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+                }
+            break;
         }
     }
 
 
     public void M_ActivateItem()
     {
-        Renderer v_renderer;
-
-        M_DeactivateItems();
-
-        v_renderer = f_items[f_activeItem].gameObject.GetComponent<Renderer>();
-
-        if (v_renderer != null)
-        {
-            v_renderer.enabled = true;
-        }
+        M_DisableRenderers(3);
+        f_items[f_activeItem].gameObject.
+            GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
     }
 
 
-    public void M_DeactivateItems()
+    public void M_StoreItem(Cs_Item p_item)
     {
-        Renderer v_renderer;
-
-        for (int i = 0; i < Cf_INVENTORY_SIZE; i++)
+        if (f_items.Count < Cf_INVENTORY_SIZE)
         {
-            v_renderer = f_items[i].gameObject.GetComponent<Renderer>();
+            p_item.transform.parent = transform;
+            p_item.transform.position = transform.position;
 
-            if (v_renderer != null)
+            p_item.GetComponent<MeshRenderer>().enabled = false;
+            p_item.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+
+            f_activeItem = Cf_INVENTORY_SIZE -1;
+            M_ActivateItem();
+        }
+        else print("Your inventory is full.");
+    }
+
+
+    public void M_DropItem(Vector3 p_position)
+    {
+        f_items[f_activeItem].transform.parent = f_worldItems.transform;
+        f_items[f_activeItem].transform.position = p_position;
+
+        f_items[f_activeItem].
+            GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+        f_items[f_activeItem].
+            GetComponent<MeshRenderer>().enabled = true;
+        
+        if (Cf_INVENTORY_SIZE > 0)
+        {
+            if (Cf_INVENTORY_SIZE <= f_activeItem)
             {
-                v_renderer.enabled = false;
+                f_activeItem--;
             }
+            M_ActivateItem();
         }
-    }
-
-
-    public void M_StoreItem(string p_itemType)
-    {
-        for (int i = 0; i < Cf_INVENTORY_SIZE; i++)
-		{
-			if (f_itemTypes[i] != "")
-			{
-				f_items[i] = GetComponent(p_itemType) as Cs_Item;
-                f_activeItem = i;
-                return;
-			}
-		}
-        M_ActivateItem();
     }
 
 
@@ -132,47 +125,10 @@ public class Cs_Inventory : MonoBehaviour
     {
         if (f_activeItem < Cf_INVENTORY_SIZE - 1 && f_activeItem > 0)
         {
-            if (p_next)
-            {
-                for (int i = f_activeItem + 1; i < Cf_INVENTORY_SIZE; i++)
-                {
-                    if (f_items[i].GetComponents<Component>().Length > 2)
-                    {
-                        f_activeItem = i;
-                        return;
-                    }
-                }
-            }
-            else
-            {
-                for (int i = f_activeItem - 1; i >= 0; i--)
-                {
-                    if (f_items[i].GetComponents<Component>().Length > 2)
-                    {
-                        f_activeItem = i;
-                        return;
-                    }
-                }
-            }
+            if (p_next) f_activeItem++; else f_activeItem--;
             M_ActivateItem();
         }
-    }
-
-
-    public void M_DropItem(Vector3 p_position)
-    {
-        f_items[f_activeItem].M_Drop(p_position);
-        f_items[f_activeItem] = new Cs_Item();
-
-        for (int i = f_activeItem; i < Cf_INVENTORY_SIZE; i++)
-        {
-            if (f_items[i].GetComponents<Component>().Length > 2)
-            {
-                f_activeItem = i;
-                return;
-            }
-        }
-        M_ActivateItem();
+        else print("No more items this way.");
     }
 
 
@@ -182,7 +138,7 @@ public class Cs_Inventory : MonoBehaviour
     }
 
 
-    public Cs_Item[] M_GetAllItems()
+    public List<Cs_Item> M_GetAllItems()
     {
         return f_items;
     }

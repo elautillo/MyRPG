@@ -22,16 +22,15 @@ public class Cs_Item : MonoBehaviour
 	}
 
 
-	public void M_Action(Cs_Player p_player)
+	void M_Rotate()
 	{
-		transform.parent = p_player.transform;
-        f_itemTypes[i] = v_swordType;
+		f_rotation += f_speed;
+		transform.rotation = Quaternion.Euler(new Vector3(0, f_rotation, 0));
 	}
 
-	
-	public void M_Drop(Vector3 p_position)
+
+	public void M_Action(Cs_Player p_player)
 	{
-		f_drop.GetComponent<Renderer>().enabled = true;
-		f_drop.transform.position = p_position;
+        p_player.M_GetInventory().M_StoreItem(this);
 	}
 }

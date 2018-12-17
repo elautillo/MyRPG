@@ -17,7 +17,7 @@ public sealed class Ps_DataStore : MonoBehaviour
 	public static void StoreAll(
         Vector3 p_position,
         int p_score,
-        Cs_Item[] p_items,
+        List<Cs_Item> p_items,
         int p_inventoryLength)
 	{
         StoreScene();
@@ -26,7 +26,7 @@ public sealed class Ps_DataStore : MonoBehaviour
 
         for (int i = 0; i < p_inventoryLength; i++)
         {
-            StoreItem(i, p_items[i].GetType().ToString());
+            StoreItem(i, p_items[i].name);
         }
     }
 
@@ -117,9 +117,9 @@ public sealed class Ps_DataStore : MonoBehaviour
     }
 
 
-    public static void StoreItem(int p_index, string p_itemType)
+    public static void StoreItem(int p_index, string p_itemName)
 	{
-        PlayerPrefs.SetString(Cf_ITEM_KEY + p_index.ToString(), p_itemType);
+        PlayerPrefs.SetString(Cf_ITEM_KEY + p_index.ToString(), p_itemName);
         
         PlayerPrefs.Save();
     }
@@ -127,13 +127,13 @@ public sealed class Ps_DataStore : MonoBehaviour
 
     public static string GetSavedItem(int p_index)
     {
-        string v_item = "";
+        string v_itemName = "";
 
         if (PlayerPrefs.HasKey(Cf_ITEM_KEY + p_index.ToString()))
         {
-            v_item = PlayerPrefs.GetString(Cf_ITEM_KEY + p_index.ToString());
+            v_itemName = PlayerPrefs.GetString(Cf_ITEM_KEY + p_index.ToString());
         }
-        return v_item;
+        return v_itemName;
     }
 
 
