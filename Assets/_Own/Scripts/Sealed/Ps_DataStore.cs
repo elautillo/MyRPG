@@ -17,7 +17,7 @@ public sealed class Ps_DataStore : MonoBehaviour
 	public static void StoreAll(
         Vector3 p_position,
         int p_score,
-        List<Cs_Item> p_items,
+        Cs_Item[] p_items,
         int p_inventoryLength)
 	{
         StoreScene();

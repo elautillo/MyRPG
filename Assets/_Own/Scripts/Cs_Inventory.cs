@@ -6,8 +6,9 @@ using System;
 public class Cs_Inventory : MonoBehaviour
 {
     const int Cf_INVENTORY_SIZE = 4;
+    int f_count = 0;
     [SerializeField] int f_activeItem = 0;
-	[SerializeField] List<Cs_Item> f_items = new List<Cs_Item>();
+	[SerializeField] Cs_Item[] f_items = new Cs_Item[Cf_INVENTORY_SIZE];
     [SerializeField] GameObject f_worldItems;
 
 
@@ -34,50 +35,33 @@ public class Cs_Inventory : MonoBehaviour
                 v_item.transform.parent = transform;
                 v_item.transform.position = transform.position;
 
-                f_items[i] = GetComponents<Cs_Item>()[i];
+                f_count++;
             }
         }
-        print(f_items.Count);
-        M_DisableRenderers(1);
-        M_DisableRenderers(2);
-        if (f_items.Count > 0) M_ActivateItem();
-    }
+        f_items = GetComponentsInChildren<Cs_Item>();
 
-
-    void M_DisableRenderers(int p_param) //Cs_Item[] p_items, Component p_component
-    {
-        switch (p_param)
+        foreach (var l_item in GetComponentsInChildren<Cs_Item>())
         {
-            case 1:
-                foreach (var l_item in GetComponents<Cs_Item>())
-                {
-                    l_item.
-                        GetComponent<MeshRenderer>().enabled = false;
-                }
-            break;
-            
-            case 2:
-                foreach (var l_item in f_worldItems.GetComponents<Cs_Item>())
-                {
-                    l_item.
-                        GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
-                }
-            break;
-
-            case 3:
-                foreach (var l_item in GetComponents<Cs_Item>())
-                {
-                    l_item.
-                        GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
-                }
-            break;
+            l_item.
+                GetComponent<MeshRenderer>().enabled = false;
         }
+
+        foreach (var l_item in f_worldItems.GetComponentsInChildren<Cs_Item>())
+        {
+            l_item.
+                GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+        }
+        if (f_count > 0) M_ActivateItem();
     }
 
 
     public void M_ActivateItem()
     {
-        M_DisableRenderers(3);
+        foreach (var l_item in GetComponentsInChildren<Cs_Item>())
+        {
+            l_item.
+                GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+        }
         f_items[f_activeItem].gameObject.
             GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
     }
@@ -85,7 +69,7 @@ public class Cs_Inventory : MonoBehaviour
 
     public void M_StoreItem(Cs_Item p_item)
     {
-        if (f_items.Count < Cf_INVENTORY_SIZE)
+        if (f_count < Cf_INVENTORY_SIZE)
         {
             p_item.transform.parent = transform;
             p_item.transform.position = transform.position;
@@ -93,7 +77,10 @@ public class Cs_Inventory : MonoBehaviour
             p_item.GetComponent<MeshRenderer>().enabled = false;
             p_item.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
 
-            f_activeItem = Cf_INVENTORY_SIZE -1;
+            f_items = GetComponentsInChildren<Cs_Item>();
+            f_count++;
+
+            f_activeItem = f_count -1;
             M_ActivateItem();
         }
         else print("Your inventory is full.");
@@ -102,33 +89,55 @@ public class Cs_Inventory : MonoBehaviour
 
     public void M_DropItem(Vector3 p_position)
     {
-        f_items[f_activeItem].transform.parent = f_worldItems.transform;
-        f_items[f_activeItem].transform.position = p_position;
-
-        f_items[f_activeItem].
-            GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
-        f_items[f_activeItem].
-            GetComponent<MeshRenderer>().enabled = true;
-        
-        if (Cf_INVENTORY_SIZE > 0)
+        if (f_count > 0)
         {
-            if (Cf_INVENTORY_SIZE <= f_activeItem)
+            f_items[f_activeItem].transform.parent = f_worldItems.transform;
+            f_items[f_activeItem].transform.position = p_position;
+
+            f_items[f_activeItem].
+                GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+            f_items[f_activeItem].
+                GetComponent<MeshRenderer>().enabled = true;
+
+            f_items = GetComponentsInChildren<Cs_Item>();
+            f_count--;
+        
+            if (f_activeItem > 0)
             {
                 f_activeItem--;
+                M_ActivateItem();
             }
-            M_ActivateItem();
         }
+        else print("Your inventory is empty.");
     }
 
 
     public void M_ChangeItem(bool p_next)
     {
-        if (f_activeItem < Cf_INVENTORY_SIZE - 1 && f_activeItem > 0)
+        if (f_count > 0)
         {
-            if (p_next) f_activeItem++; else f_activeItem--;
-            M_ActivateItem();
+            if (p_next)
+            {
+                if (f_activeItem < f_count - 1)
+                {
+                    f_activeItem++;
+                }
+                else print("No newer items.");
+
+                M_ActivateItem();
+            }
+            else
+            {
+                if (f_activeItem > 0)
+                {
+                    f_activeItem--;
+                }
+                else print("No older items.");
+
+                M_ActivateItem();
+            }
         }
-        else print("No more items this way.");
+        else print("Your inventory is empty.");
     }
 
 
@@ -138,7 +147,7 @@ public class Cs_Inventory : MonoBehaviour
     }
 
 
-    public List<Cs_Item> M_GetAllItems()
+    public Cs_Item[] M_GetAllItems()
     {
         return f_items;
     }

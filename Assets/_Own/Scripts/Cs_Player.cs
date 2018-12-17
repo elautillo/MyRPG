@@ -5,6 +5,7 @@ using UnityEngine;
 public class Cs_Player : MonoBehaviour
 {
     [SerializeField] int f_score;
+    [SerializeField] float f_dropHeight = 0.1f;
 
     Cs_Inventory f_inventory;
     RaycastHit f_hit;
@@ -44,7 +45,8 @@ public class Cs_Player : MonoBehaviour
        }
        else if (Input.GetKeyDown(Ps_Input.GetDropItemKey()))
        {
-           f_inventory.M_DropItem(transform.position + new Vector3(0, 1, 0));
+           f_inventory.M_DropItem(
+               transform.position + new Vector3(0, f_dropHeight, 0));
        }
     }
     

@@ -2,22 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cs_Item : MonoBehaviour
+public class Cs_Item : MonoBehaviour, Is_Interactable<Cs_Player>
 {
 	int f_rotation = 0;
 	[SerializeField] int f_speed = 1;
-	Rigidbody f_rigidbody;
 
 
-	void Start()
+	public virtual void Start()
 	{
-		f_rigidbody = GetComponent<Rigidbody>();
-		f_rigidbody.constraints = RigidbodyConstraints.FreezePosition;
+
 	}
 	
 
-	void Update()
+	public virtual void Update()
 	{
+		transform.position = transform.position;
 		M_Rotate();
 	}
 

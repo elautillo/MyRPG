@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class Cs_Shield : Cs_Item
 {
-
-	// Use this for initialization
-	void Start () {
-		
+	public override void Start () {
+		base.Start();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+
+	public override void Update () {
+		base.Update();
 	}
 }

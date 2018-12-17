@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class Cs_Staff : Cs_Item, Is_Damaging<int>
 {
-
-	// Use this for initialization
-	void Start () {
-		
+	public override void Start () {
+		base.Start();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+
+	public override void Update () {
+		base.Update();
 	}
 
 	public void M_DealDamage(int p_damage)
