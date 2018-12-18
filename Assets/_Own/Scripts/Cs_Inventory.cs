@@ -143,7 +143,15 @@ public class Cs_Inventory : MonoBehaviour
 
     public Cs_Item M_GetActiveItem()
     {
-        return f_items[f_activeItem];
+        if (f_count > 0)
+        {
+            return f_items[f_activeItem];
+        }
+        else
+        {
+            print("No active items.");
+            return new Cs_Item();
+        }
     }
 
 

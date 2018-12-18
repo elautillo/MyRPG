@@ -12,6 +12,7 @@ public sealed class Ps_DataStore : MonoBehaviour
     const string Cf_INVENTORY_KEY = "savedInventory";
     const string Cf_ITEM_KEY = "Item";
     const string Cf_SCORE_KEY = "savedScore";
+    const string Cf_MAX_SCORE_KEY = "savedMaxScore";
 
 
 	public static void StoreAll(
@@ -102,6 +103,16 @@ public sealed class Ps_DataStore : MonoBehaviour
         PlayerPrefs.SetInt(Cf_SCORE_KEY, p_score);
 
         PlayerPrefs.Save();
+
+        if (p_score > GetSavedMaxScore()) StoreMaxScore(p_score);
+    }
+
+    
+    public static void StoreMaxScore(int p_maxScore)
+    {
+        PlayerPrefs.SetInt(Cf_MAX_SCORE_KEY, p_maxScore);
+
+        PlayerPrefs.Save();
     }
 
 
@@ -114,6 +125,18 @@ public sealed class Ps_DataStore : MonoBehaviour
             v_savedScore = PlayerPrefs.GetInt(Cf_SCORE_KEY);
         }
         return v_savedScore;
+    }
+
+
+    public static int GetSavedMaxScore()
+    {
+        int v_savedMaxScore = 0;
+
+        if (PlayerPrefs.HasKey(Cf_MAX_SCORE_KEY))
+        {
+            v_savedMaxScore = PlayerPrefs.GetInt(Cf_MAX_SCORE_KEY);
+        }
+        return v_savedMaxScore;
     }
 
 
