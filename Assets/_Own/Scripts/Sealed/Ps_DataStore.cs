@@ -33,6 +33,26 @@ public sealed class Ps_DataStore : MonoBehaviour
     }
 
 
+    public static void StoreResult(int result)
+    {
+        PlayerPrefs.SetInt("Result", result);
+
+        PlayerPrefs.Save();
+    }
+
+
+    public static int GetResult()
+    {
+        int v_result = 0;
+
+        if (PlayerPrefs.HasKey("Result"))
+        {
+            v_result = PlayerPrefs.GetInt("Result");
+        }
+        return v_result;
+    }
+
+
     public static void StoreScene()
 	{
         int v_sceneId = SceneManager.GetActiveScene().buildIndex;
@@ -181,6 +201,26 @@ public sealed class Ps_DataStore : MonoBehaviour
         if (PlayerPrefs.HasKey(Cf_ITEM_KEY + p_index.ToString()))
         {
             v_itemName = PlayerPrefs.GetString(Cf_ITEM_KEY + p_index.ToString());
+        }
+        return v_itemName;
+    }
+
+
+    public static void SetDifficulty(int i)
+    {
+        PlayerPrefs.SetInt("Difficulty", i);
+        
+        PlayerPrefs.Save();
+    }
+
+
+    public static int GetDifficulty()
+    {
+        int v_itemName = 2;
+
+        if (PlayerPrefs.HasKey("Difficulty"))
+        {
+            v_itemName = PlayerPrefs.GetInt("Difficulty");
         }
         return v_itemName;
     }

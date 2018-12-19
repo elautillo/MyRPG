@@ -1,32 +1,45 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Cs_Player : MonoBehaviour
 {
-    [SerializeField] int health = 100;
-    [SerializeField] int f_score;
+    [SerializeField] int f_health = 100;
+    [SerializeField] Text f_healthText;
+    [SerializeField] int f_score = 0;
+    [SerializeField] Text f_scoreText;
     [SerializeField] float f_dropHeight = 0.1f;
 
     Cs_Inventory f_inventory;
     RaycastHit f_hit;
+    int difficulty;
 
 
     void Awake()
     {
         f_inventory = GetComponentInChildren<Cs_Inventory>();
+        difficulty = Ps_DataStore.GetDifficulty();
     }
 
 
     void Start()
     {
-        
+        InvokeRepeating("M_GetDamage", 2, 2);
     }
 
 
     void Update()
     {
+        f_healthText.text = "Health: " + f_health.ToString();
+        f_scoreText.text = "Total Score: " + f_score.ToString();
+
         M_CheckInput();
+        
+        if (f_health <= 0) M_Die();
+
+        if (f_inventory.GetComponentsInChildren<Cs_Item>().Length >= difficulty) M_Win();
     }
 
 
@@ -78,6 +91,12 @@ public class Cs_Player : MonoBehaviour
                 print(Ps_Debug.GetInteractingMessage());
 
                 v_interactableTarget.M_Interaction(this);
+                GetComponent<AudioSource>().Play();
+                M_AddScore(10);
+                if(v_interactableTarget.GetType() == typeof(Cs_Item))
+                {
+                    M_AddScore(90);
+                }
             }
             else print(Ps_Debug.GetNonInteractableMessage());
         }
@@ -85,9 +104,21 @@ public class Cs_Player : MonoBehaviour
     }
 
 
+    void M_GetDamage()
+    {
+        f_health = f_health - 1;
+    }
+
+
+    void M_Die()
+    {
+        SceneManager.LoadScene(3);
+    }
+
+
     public int M_GetHealth()
     {
-        return health;
+        return f_health;
     }
 
 
@@ -97,8 +128,21 @@ public class Cs_Player : MonoBehaviour
     }
 
 
+    public void M_AddScore(int p_bonusScore)
+    {
+        f_score = f_score + p_bonusScore;
+    }
+
+
     public Cs_Inventory M_GetInventory()
     {
         return f_inventory;
+    }
+
+
+    void M_Win()
+    {
+        Ps_DataStore.StoreResult(1);
+        SceneManager.LoadScene(3);
     }
 }

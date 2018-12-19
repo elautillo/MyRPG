@@ -8,6 +8,10 @@ public class Cs_GoToMenuButton : MonoBehaviour
 {
 	public void M_GoToMenu()
 	{
+		if (SceneManager.GetActiveScene().buildIndex == 3)
+		{
+			
+		}
 		SceneManager.LoadScene(1);
 	}
 }

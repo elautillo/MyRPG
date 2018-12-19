@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class Cs_Inventory : MonoBehaviour
 {
@@ -10,20 +11,52 @@ public class Cs_Inventory : MonoBehaviour
     [SerializeField] int f_activeItem = 0;
 	[SerializeField] Cs_Item[] f_items = new Cs_Item[Cf_INVENTORY_SIZE];
     [SerializeField] GameObject f_worldItems;
+    
+    [SerializeField] Text itemCheck1;
+    [SerializeField] Text itemCheck2;
+    [SerializeField] Text itemCheck3;
+    [SerializeField] Text itemCheck4;
 
 
 	void Start()
 	{
+        itemCheck1.enabled = false;
+        itemCheck2.enabled = false;
+        itemCheck3.enabled = false;
+        itemCheck4.enabled = false;
         Ps_DataStore.ClearData();
         M_Fill();
 	}
+
+
+    void Update()
+    {
+        switch (f_count)
+        {
+            case 1:
+            itemCheck1.enabled = true;
+            break;
+
+            case 2:
+            itemCheck2.enabled = true;
+            break;
+
+            case 3:
+            itemCheck3.enabled = true;
+            break;
+
+            case 4:
+            itemCheck4.enabled = true;
+            break;
+        }
+    }
 
 
     void M_Fill()
     {
         string v_itemName;
         GameObject v_item;
-
+        
         for (int i = 0; i < Cf_INVENTORY_SIZE; i++)
         {
             v_itemName = Ps_DataStore.GetSavedItem(i);
@@ -50,6 +83,8 @@ public class Cs_Inventory : MonoBehaviour
         {
             l_item.
                 GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+            l_item.
+                GetComponent<MeshRenderer>().enabled = false;
         }
         if (f_count > 0) M_ActivateItem();
     }
@@ -164,5 +199,11 @@ public class Cs_Inventory : MonoBehaviour
     public int M_GetSize()
     {
         return Cf_INVENTORY_SIZE;
+    }
+
+
+    public int M_GetCount()
+    {
+        return f_count;
     }
 }
