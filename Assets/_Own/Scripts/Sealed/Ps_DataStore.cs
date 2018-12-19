@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public sealed class Ps_DataStore : MonoBehaviour
 {
 	const string Cf_SCENE_ID_KEY = "sceneId";
+    const string Cf_UNLOCKED_SCENES_KEY = "unlockedScenes";
     const string Cf_XPOS_KEY = "xPos";
     const string Cf_YPOS_KEY = "yPos";
     const string Cf_ZPOS_KEY = "zPos";
@@ -34,14 +35,27 @@ public sealed class Ps_DataStore : MonoBehaviour
 
     public static void StoreScene()
 	{
+        int v_sceneId = SceneManager.GetActiveScene().buildIndex;
+
         PlayerPrefs.SetInt(
-            Cf_SCENE_ID_KEY, SceneManager.GetActiveScene().buildIndex);
+            Cf_SCENE_ID_KEY, v_sceneId);
+
+        PlayerPrefs.Save();
+
+        if (v_sceneId > GetUnlockedScenes()) UnlockScene(v_sceneId);
+    }
+
+
+    static void UnlockScene(int v_sceneId)
+    {
+        PlayerPrefs.SetInt(
+            Cf_UNLOCKED_SCENES_KEY, v_sceneId);
 
         PlayerPrefs.Save();
     }
 
 
-    public static int GetSavedScene()
+    static int GetSavedScene()
     {
         int v_savedScene = -1;
 
@@ -62,6 +76,18 @@ public sealed class Ps_DataStore : MonoBehaviour
             SceneManager.LoadScene(v_savedScene);
         }
         else print("No saved scenes available");
+    }
+
+
+    public static int GetUnlockedScenes()
+    {
+        int v_unlockedScenes = 2;
+
+        if (PlayerPrefs.HasKey(Cf_UNLOCKED_SCENES_KEY))
+        {
+             v_unlockedScenes = PlayerPrefs.GetInt(Cf_UNLOCKED_SCENES_KEY);
+        }
+        return v_unlockedScenes;
     }
 
 

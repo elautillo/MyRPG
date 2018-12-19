@@ -16,6 +16,11 @@ public class Cs_Sword : Cs_Item, Is_Damaging<int>
 
 	public void M_DealDamage(int p_damage)
 	{
+		
+	}
 
+	public override void M_Use()
+	{
+		GetComponentInParent<Cs_Player>();
 	}
 }

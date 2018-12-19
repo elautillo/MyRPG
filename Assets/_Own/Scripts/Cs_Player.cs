@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Cs_Player : MonoBehaviour
 {
+    [SerializeField] int health = 100;
     [SerializeField] int f_score;
     [SerializeField] float f_dropHeight = 0.1f;
 
@@ -31,7 +32,11 @@ public class Cs_Player : MonoBehaviour
 
     void M_CheckInput()
     {
-       if (Input.GetKeyDown(Ps_Input.GetInteractionKey()))
+       if (Input.GetKeyDown(Ps_Input.GetUseItemKey()))
+       {
+           M_UseItem();
+       }
+       else if (Input.GetKeyDown(Ps_Input.GetInteractionKey()))
        {
            M_Interact();
        }
@@ -48,6 +53,12 @@ public class Cs_Player : MonoBehaviour
            f_inventory.M_DropItem(
                transform.position + new Vector3(0, f_dropHeight, 0));
        }
+    }
+
+
+    void M_UseItem()
+    {
+        f_inventory.M_GetActiveItem().M_Use();
     }
     
 
@@ -66,11 +77,17 @@ public class Cs_Player : MonoBehaviour
             {
                 print(Ps_Debug.GetInteractingMessage());
 
-                v_interactableTarget.M_Action(this);
+                v_interactableTarget.M_Interaction(this);
             }
             else print(Ps_Debug.GetNonInteractableMessage());
         }
         else print(Ps_Debug.GetNoDetectionMessage());
+    }
+
+
+    public int M_GetHealth()
+    {
+        return health;
     }
 
 

@@ -28,7 +28,10 @@ public class Cs_Item : MonoBehaviour, Is_Interactable<Cs_Player>
 	}
 
 
-	public void M_Action(Cs_Player p_player)
+	public virtual void M_Use(){}
+
+
+	public void M_Interaction(Cs_Player p_player)
 	{
         p_player.M_GetInventory().M_StoreItem(this);
 	}

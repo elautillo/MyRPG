@@ -19,7 +19,7 @@ public class Cs_LevelButton : MonoBehaviour
 
 	void Start()
 	{
-		if (Ps_DataStore.GetSavedScene() == f_sceneNumber)
+		if (Ps_DataStore.GetUnlockedScenes() >= f_sceneNumber)
 		{
 			button.interactable = true;
 		}

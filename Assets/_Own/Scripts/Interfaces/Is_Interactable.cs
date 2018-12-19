@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface Is_Interactable<p>
 {
-	void M_Action(Cs_Player p_player);
+	void M_Interaction(Cs_Player p_player);
 }

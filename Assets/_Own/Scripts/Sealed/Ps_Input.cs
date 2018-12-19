@@ -15,6 +15,7 @@ public sealed class Ps_Input
 	const KeyCode Cf_PLAYER_PREVIOUSITEM_KEY = KeyCode.Q;
 	const KeyCode Cf_PLAYER_DROPITEM_KEY = KeyCode.R;
 
+	const KeyCode Cf_PLAYER_USEITEM_KEY = KeyCode.Mouse0;
 	const KeyCode Cf_PLAYER_INTERACTION_KEY = KeyCode.F;
 	
 	const KeyCode Cf_CAMERA_SHIFT_KEY = KeyCode.Mouse1;
@@ -71,6 +72,12 @@ public sealed class Ps_Input
 	public static KeyCode GetDropItemKey()
 	{
 		return Cf_PLAYER_DROPITEM_KEY;
+	}
+	
+
+	public static KeyCode GetUseItemKey()
+	{
+		return Cf_PLAYER_USEITEM_KEY;
 	}
 
 
