@@ -11,45 +11,14 @@ public class Cs_Inventory : MonoBehaviour
     [SerializeField] int f_activeItem = 0;
 	[SerializeField] Cs_Item[] f_items = new Cs_Item[Cf_INVENTORY_SIZE];
     [SerializeField] GameObject f_worldItems;
-    
-    [SerializeField] Text itemCheck1;
-    [SerializeField] Text itemCheck2;
-    [SerializeField] Text itemCheck3;
-    [SerializeField] Text itemCheck4;
+    [SerializeField] GameObject f_itemIcons;
+    [SerializeField] GameObject f_iconSlots;
 
 
 	void Start()
 	{
-        itemCheck1.enabled = false;
-        itemCheck2.enabled = false;
-        itemCheck3.enabled = false;
-        itemCheck4.enabled = false;
-        Ps_DataStore.ClearData();
         M_Fill();
 	}
-
-
-    void Update()
-    {
-        switch (f_count)
-        {
-            case 1:
-            itemCheck1.enabled = true;
-            break;
-
-            case 2:
-            itemCheck2.enabled = true;
-            break;
-
-            case 3:
-            itemCheck3.enabled = true;
-            break;
-
-            case 4:
-            itemCheck4.enabled = true;
-            break;
-        }
-    }
 
 
     void M_Fill()
@@ -72,6 +41,11 @@ public class Cs_Inventory : MonoBehaviour
             }
         }
         f_items = GetComponentsInChildren<Cs_Item>();
+
+        for (int i = 0; i < f_count; i++)
+        {
+            M_ManageIcons(i, i);
+        }
 
         foreach (var l_item in GetComponentsInChildren<Cs_Item>())
         {
@@ -115,6 +89,11 @@ public class Cs_Inventory : MonoBehaviour
             f_items = GetComponentsInChildren<Cs_Item>();
             f_count++;
 
+            for (int i = 0; i < f_count; i++)
+            {
+                M_ManageIcons(i, i);
+            }
+
             f_activeItem = f_count -1;
             M_ActivateItem();
         }
@@ -136,6 +115,13 @@ public class Cs_Inventory : MonoBehaviour
 
             f_items = GetComponentsInChildren<Cs_Item>();
             f_count--;
+
+            for (int i = 0; i < f_count; i++)
+            {
+                M_ManageIcons(i, i);
+            }
+
+            M_ManageIcons(f_count, 6);
         
             if (f_activeItem > 0)
             {
@@ -173,6 +159,13 @@ public class Cs_Inventory : MonoBehaviour
             }
         }
         else print("Your inventory is empty.");
+    }
+
+
+    void M_ManageIcons(int p_index1, int p_index2)
+    {
+        f_iconSlots.GetComponentsInChildren<Image>()[p_index1].sprite =
+                    f_itemIcons.GetComponentsInChildren<Image>()[p_index2].sprite;
     }
 
 

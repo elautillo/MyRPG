@@ -93,10 +93,6 @@ public class Cs_Player : MonoBehaviour
                 v_interactableTarget.M_Interaction(this);
                 GetComponent<AudioSource>().Play();
                 M_AddScore(10);
-                if(v_interactableTarget.GetType() == typeof(Cs_Item))
-                {
-                    M_AddScore(90);
-                }
             }
             else print(Ps_Debug.GetNonInteractableMessage());
         }
