@@ -21,6 +21,7 @@ public class Cs_Player : MonoBehaviour
     {
         f_inventory = GetComponentInChildren<Cs_Inventory>();
         difficulty = Ps_DataStore.GetDifficulty();
+        Ps_DataStore.StoreResult(0);
     }
 
 
